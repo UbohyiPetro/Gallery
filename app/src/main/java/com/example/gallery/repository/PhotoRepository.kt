@@ -10,7 +10,7 @@ class PhotoRepository @Inject constructor(
 ) {
 
     suspend fun getPhotos(): List<PhotoItem>? {
-        return photosApi.getPhotos().body()?.map { photoResponseItem ->
+        return photosApi.getPhotos(1).body()?.map { photoResponseItem ->
             photoResponseItem.toPhotoItem()
         }
     }

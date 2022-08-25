@@ -42,7 +42,7 @@ class PhotosListAdapter : ListAdapter<PhotoItem, PhotosListAdapter.PhotosViewHol
             setOnClickListener {
                 findNavController().navigate(
                     PhotosListFragmentDirections.actionPhotosListFragmentToPhotoFragment(
-                        photo.urls.full
+                        photo.urls.regular
                     )
                 )
             }
