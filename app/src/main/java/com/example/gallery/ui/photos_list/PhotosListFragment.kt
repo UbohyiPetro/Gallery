@@ -2,41 +2,59 @@ package com.example.gallery.ui.photos_list
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.gallery.R
 import com.example.gallery.ui.model.PhotoItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.photos_list_fragment.*
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PhotosListFragment : Fragment(R.layout.photos_list_fragment) {
 
-    private val photos = listOf(
-        PhotoItem("fdgdf3"),
-        PhotoItem("3523"),
-        PhotoItem("gdfs"),
-        PhotoItem("fdgdf3"),
-        PhotoItem("fdgdf3"),
-        PhotoItem("gdsjri"),
-        PhotoItem("fdgdf3"),
-        PhotoItem("fdgdf3"),
-        PhotoItem("fdgdf3"),
-        PhotoItem("352"),
-        PhotoItem("vsjafa"),
-        PhotoItem("fdgdf3"),
-        PhotoItem("fdgdf3"),
-        PhotoItem("fdgdf3"),
-        PhotoItem("4382u5"),
-        PhotoItem("fdgdf3"),
-    )
-
     private val photosListAdapter: PhotosListAdapter = PhotosListAdapter()
+    private val photosListViewModel: PhotosListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
-        photosListAdapter.submitList(photos)
+        lifecycleScope.launch {
+            photosListViewModel.photosViewState.collect { viewState ->
+                when {
+                    viewState.isLoading -> showLoading()
+                    viewState.photos?.isNotEmpty() == true -> {
+                        hideLoading()
+                        photosListAdapter.submitList(viewState.photos)
+                    }
+                    viewState.photos?.isEmpty() == true -> {
+                        showError("Photos not found")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showLoading() {
+        rvPhotos.isVisible = false
+        pbLoader.isVisible = true
+        tvError.isVisible = false
+    }
+
+    private fun hideLoading() {
+        rvPhotos.isVisible = true
+        pbLoader.isVisible = false
+        tvError.isVisible = false
+    }
+
+    private fun showError(error: String) {
+        rvPhotos.isVisible = false
+        pbLoader.isVisible = false
+        tvError.isVisible = true
+        tvError.text = error
     }
 
     private fun setupRecyclerView() {

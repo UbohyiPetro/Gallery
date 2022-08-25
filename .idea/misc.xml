@@ -3,9 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/petro.ubohyi/StudioProjects/Gallery/app/src/main/res/layout/activity_main.xml" value="0.2625" />
         <entry key="..\:/Users/petro.ubohyi/StudioProjects/Gallery/app/src/main/res/layout/photo_fragment.xml" value="0.2625" />
-        <entry key="..\:/Users/petro.ubohyi/StudioProjects/Gallery/app/src/main/res/layout/photo_item.xml" value="0.536" />
+        <entry key="..\:/Users/petro.ubohyi/StudioProjects/Gallery/app/src/main/res/layout/photo_item.xml" value="0.2625" />
         <entry key="..\:/Users/petro.ubohyi/StudioProjects/Gallery/app/src/main/res/layout/photos_list_fragment.xml" value="0.2625" />
       </map>
     </option>

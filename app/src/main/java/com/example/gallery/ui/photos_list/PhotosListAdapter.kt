@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.photo_item.view.*
 class PhotosListAdapter : ListAdapter<PhotoItem, PhotosListAdapter.PhotosViewHolder>(
     object : DiffUtil.ItemCallback<PhotoItem>() {
         override fun areItemsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean {
-            return oldItem.photoUrl == newItem.photoUrl
+            return oldItem.urls == newItem.urls
         }
 
         override fun areContentsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean {
@@ -42,12 +42,12 @@ class PhotosListAdapter : ListAdapter<PhotoItem, PhotosListAdapter.PhotosViewHol
             setOnClickListener {
                 findNavController().navigate(
                     PhotosListFragmentDirections.actionPhotosListFragmentToPhotoFragment(
-                        photo.photoUrl
+                        photo.urls.full
                     )
                 )
             }
-            Glide.with(this).load(photo.photoUrl)
-                .fitCenter()
+            Glide.with(this).load(photo.urls.small)
+                .centerCrop()
                 .into(ivPhoto)
             tvUsername.text = photo.username
         }
