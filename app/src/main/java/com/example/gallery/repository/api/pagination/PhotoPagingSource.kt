@@ -5,14 +5,13 @@ import androidx.paging.PagingState
 import com.example.gallery.repository.api.PhotosApi
 import com.example.gallery.repository.api.model.toPhotoItem
 import com.example.gallery.ui.model.PhotoItem
-import dagger.assisted.AssistedFactory
 import retrofit2.HttpException
 import java.io.IOException
-import javax.inject.Inject
+import java.lang.NullPointerException
 
 private const val PHOTO_STARTING_PAGE = 1
 
-class PhotoPagingSource (
+class PhotoPagingSource(
     private val photosApi: PhotosApi
 ) : PagingSource<Int, PhotoItem>() {
 
@@ -26,9 +25,9 @@ class PhotoPagingSource (
         val position = params.key ?: PHOTO_STARTING_PAGE
         return try {
             val response = photosApi.getPhotos(position, params.loadSize)
-            val photos = response.body()
+            val photos = response.body() ?: return LoadResult.Error(NullPointerException())
             LoadResult.Page(
-                data = photos!!.map { it.toPhotoItem() },
+                data = photos.map { it.toPhotoItem() },
                 prevKey = if (position == PHOTO_STARTING_PAGE) null else position - 1,
                 nextKey = if (photos.isEmpty()) null else position + 1
             )

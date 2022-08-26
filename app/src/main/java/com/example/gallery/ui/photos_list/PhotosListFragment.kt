@@ -8,7 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.gallery.R
-import com.example.gallery.ui.model.PhotoItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.photos_list_fragment.*
 import kotlinx.coroutines.launch
@@ -26,12 +25,9 @@ class PhotosListFragment : Fragment(R.layout.photos_list_fragment) {
             photosListViewModel.photosViewState.collect { viewState ->
                 when {
                     viewState.isLoading -> showLoading()
-                    viewState.photos?.isNotEmpty() == true -> {
+                    !viewState.isLoading -> {
                         hideLoading()
-                        photosListAdapter.submitList(viewState.photos)
-                    }
-                    viewState.photos?.isEmpty() == true -> {
-                        showError("Photos not found")
+                        photosListAdapter.submitData(viewState.photos)
                     }
                 }
             }

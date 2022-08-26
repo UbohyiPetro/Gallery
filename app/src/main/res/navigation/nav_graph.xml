@@ -18,6 +18,7 @@
         android:label="PhotoFragment" >
         <argument
             android:name="imageUrl"
+            app:nullable="true"
             app:argType="string" />
     </fragment>
 </navigation>
