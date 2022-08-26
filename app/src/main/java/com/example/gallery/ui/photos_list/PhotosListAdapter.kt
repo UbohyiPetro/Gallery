@@ -1,9 +1,12 @@
 package com.example.gallery.ui.photos_list
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import androidx.paging.PagingDataAdapter
+import androidx.paging.PagingDataDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +15,7 @@ import com.example.gallery.R
 import com.example.gallery.ui.model.PhotoItem
 import kotlinx.android.synthetic.main.photo_item.view.*
 
-class PhotosListAdapter : ListAdapter<PhotoItem, PhotosListAdapter.PhotosViewHolder>(
+class PhotosListAdapter : PagingDataAdapter<PhotoItem, PhotosListAdapter.PhotosViewHolder>(
     object : DiffUtil.ItemCallback<PhotoItem>() {
         override fun areItemsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean {
             return oldItem.urls == newItem.urls
@@ -37,21 +40,20 @@ class PhotosListAdapter : ListAdapter<PhotoItem, PhotosListAdapter.PhotosViewHol
     }
 
     override fun onBindViewHolder(holder: PhotosViewHolder, position: Int) {
-        val photo = currentList[position]
+        val photo = getItem(position)
         holder.itemView.apply {
             setOnClickListener {
                 findNavController().navigate(
                     PhotosListFragmentDirections.actionPhotosListFragmentToPhotoFragment(
-                        photo.urls.regular
+                        photo?.urls?.regular
                     )
                 )
             }
-            Glide.with(this).load(photo.urls.small)
+            Glide.with(this).load(photo?.urls?.small)
                 .centerCrop()
                 .into(ivPhoto)
-            tvUsername.text = photo.username
+            tvUsername.text = photo?.username
         }
     }
-
 
 }
